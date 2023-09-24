@@ -1,0 +1,20 @@
+services:
+  traefik-dynamic-ipwhitelist-update:
+    image: sarasmiseth/traefik-dynamic-ipwhitelist-update
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    restart: unless-stopped
+    environment:
+      - "NETWORK_DEVICE=eth0"
+      # Filter that is used with grep
+      # - "IP_ADDRESS_FILTER=/64"
+      - "INPUT_FILE=/src/config.yml"
+      # name of the middleware that has the ipWhiteList to update
+      - "MIDDLEWARE_NAME=test-whitelist"
+    volumes:
+      # Mount your dynamic config. Path inside container has to match INPUT_FILE.
+      # See dynamic-config.yml for a minimal example.
+      - ./dynamic-config.yml:/src/config.yml
+    network_mode: host
