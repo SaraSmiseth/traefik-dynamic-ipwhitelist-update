@@ -13,7 +13,8 @@ args = parser.parse_args()
 with open(args.input_file, 'r') as f:
     config_data = yaml.load(f, Loader=yaml.FullLoader)
 
-config_data['http']['middlewares'][args.middleware_name]['ipWhiteList']['sourceRange'][1] = args.new_ip
+if config_data['http']['middlewares'][args.middleware_name]['ipWhiteList']['sourceRange'][1] != args.new_ip:
+    config_data['http']['middlewares'][args.middleware_name]['ipWhiteList']['sourceRange'][1] = args.new_ip
 
-with open(args.input_file, 'w') as f:
-    yaml.dump(config_data, f, default_flow_style=False)
+    with open(args.input_file, 'w') as f:
+        yaml.dump(config_data, f, default_flow_style=False)
